@@ -13,6 +13,8 @@ class ContentTableViewCell: UITableViewCell {
 
     static let cellIdentifier = "ContentTableViewCell"
     
+    // MARK: - Properties Initializer
+
     private var idLabel: UILabel = {
         let idLabel = UILabel(frame: CGRect.zero)
         idLabel.textAlignment = .left
@@ -118,6 +120,7 @@ class ContentTableViewCell: UITableViewCell {
         layoutIfNeeded()
     }
     
+    // Setup UI with actual data
     func configureCellData(with cellData: ContentData) {
         
         self.idLabel.text = cellData.id ?? ""
@@ -128,19 +131,21 @@ class ContentTableViewCell: UITableViewCell {
             self.contentImageView.isHidden = false
             self.dataLabel.isHidden = true
             self.contentImageView.image = UIImage(named: "defaultImage")
-            self.downloadImage(imageURL: cellData.data)
+            
+            if NetworkState().isNetworkAvailable {
+                self.downloadImage(imageURL: cellData.data)
+            }
+            
         } else {
             self.contentImageView.isHidden = true
             self.dataLabel.isHidden = false
-
              self.dataLabel.text = "\(cellData.data ?? "")"
         }
     }
     
-    func downloadImage(imageURL: String?) {
-        guard let urlString = imageURL else {
-            return
-        }
+    // API for Image download
+    private func downloadImage(imageURL: String?) {
+        guard let urlString = imageURL else { return }
         
         ContentDownloader.sharedInstance.downloadImage(with: urlString, completionBlock: { (imageData, error) in
             if imageData != nil {

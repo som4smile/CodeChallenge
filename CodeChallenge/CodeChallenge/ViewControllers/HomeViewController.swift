@@ -11,12 +11,18 @@ import SnapKit
 
 class HomeViewController: UIViewController {
     
+    // MARK: - Properties Initializer
+
     lazy var tableView: UITableView = {
         return UITableView(frame: self.view.bounds, style: .plain)
     }()
     
-    var tableData: [ContentData]?
+    // MARK: Instance variables
+
+    private var tableData: [ContentData]?
     
+    // MARK: Life cycle method
+
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
@@ -26,6 +32,8 @@ class HomeViewController: UIViewController {
         self.configureTableView()
         self.retrieveTableData()
     }
+    
+    // MARK: Private member functions
     
     private func configureTableView() {
         
@@ -42,6 +50,7 @@ class HomeViewController: UIViewController {
         self.tableView.rowHeight = UITableView.automaticDimension
     }
     
+    // API Method to download contents
     private func retrieveTableData() {
         if NetworkState().isNetworkAvailable {
             
@@ -64,7 +73,8 @@ class HomeViewController: UIViewController {
         }
     }
     
-    func parseData(jsonData: [[String: Any]]) {
+    // Parsing downloaded data
+    private func parseData(jsonData: [[String: Any]]) {
         if let jsonString = try? JSONSerialization.data(withJSONObject: jsonData, options: []),
             let content = String(data: jsonString, encoding: .utf8) {
                             
@@ -79,13 +89,28 @@ class HomeViewController: UIViewController {
             }
         }
     }
-    func sortList(list: [ContentData]) -> [ContentData] {
+   
+    // Sorting array by type (Text and Image)
+    private func sortList(list: [ContentData]) -> [ContentData] {
         let sortedArray = list.sorted(by: { $0.type > $1.type })
         print(sortedArray)
         return sortedArray
     }
 
+    private func showAlert(title: String, message: String, buttonTitle: String) {
+        let uiAlert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        uiAlert.addAction(UIAlertAction(title: NSLocalizedString(buttonTitle, comment: "Default action"), style: .default, handler: { _ in
+            debugPrint("Alert button tap")
+        }))
+        
+        DispatchQueue.main.async {
+            self.present(uiAlert, animated: true, completion: nil)
+        }
+    }
+
 }
+
+// MARK: - Table view data source and delegate
 
 extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -116,18 +141,4 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
             }
         }
     }
-}
-
-extension HomeViewController {
-    func showAlert(title: String, message: String, buttonTitle: String) {
-        let uiAlert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        uiAlert.addAction(UIAlertAction(title: NSLocalizedString(buttonTitle, comment: "Default action"), style: .default, handler: { _ in
-            debugPrint("Alert button tap")
-        }))
-        
-        DispatchQueue.main.async {
-            self.present(uiAlert, animated: true, completion: nil)
-        }
-    }
-
 }

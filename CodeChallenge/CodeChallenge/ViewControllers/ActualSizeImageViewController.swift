@@ -11,6 +11,8 @@ import SnapKit
 
 class ActualSizeImageViewController: UIViewController {
 
+    // MARK: - Properties Initializer
+
     private var contentImageView: UIImageView = {
         let imageView = UIImageView(frame: CGRect.zero)
         imageView.image = UIImage(named: "defaultImage")
@@ -19,7 +21,11 @@ class ActualSizeImageViewController: UIViewController {
         return imageView
     }()
     
+    // MARK: Instance variables
+
     var contentData: ContentData?
+
+    // MARK: Life cycle method
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,7 +45,7 @@ class ActualSizeImageViewController: UIViewController {
         self.downloadImage(urlString: urlString)
     }
     
-    func downloadImage(urlString: String) {
+    private func downloadImage(urlString: String) {
         ContentDownloader.sharedInstance.downloadImage(with: urlString, completionBlock: { (imageData, error) in
             if imageData != nil {
                 DispatchQueue.main.async {

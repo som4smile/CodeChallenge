@@ -10,6 +10,7 @@ import Foundation
 
 class ContentFileManager {
 
+    // Save the downloaded JSON file in applicationSupportDirectory
     static func saveContentData(contentData: [[String: Any]]) {
         
         do {
@@ -24,6 +25,7 @@ class ContentFileManager {
         }
     }
     
+    // Read the contents of JSON file from applicationSupportDirectory
     static func readContentData() -> [[String: Any]]? {
         do {
             let fileURL = try FileManager.default
