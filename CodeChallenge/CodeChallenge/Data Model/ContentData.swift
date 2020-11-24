@@ -22,14 +22,3 @@ struct ContentData: Codable {
     }
 }
 
-extension ContentData {
-    var dateConverted: Date {
-        guard let date = self.date else { return Date() }
-        return dateFormatter.date(from: date) ?? Date()
-    }
-    private var dateFormatter: DateFormatter {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "MM/dd/yyyy"
-        return dateFormatter
-    }
-}

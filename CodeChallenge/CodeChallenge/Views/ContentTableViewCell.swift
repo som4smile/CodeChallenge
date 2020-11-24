@@ -22,6 +22,15 @@ class ContentTableViewCell: UITableViewCell {
         return idLabel
     }()
     
+    private var typeLabel: UILabel = {
+        let typeLabel = UILabel(frame: CGRect.zero)
+        typeLabel.textAlignment = .center
+        typeLabel.numberOfLines = 0
+        typeLabel.font = .boldSystemFont(ofSize: 13.0)
+        typeLabel.textColor = .black
+        return typeLabel
+    }()
+    
     private var dateLabel: UILabel = {
         let dateLabel = UILabel(frame: CGRect.zero)
         dateLabel.textAlignment = .right
@@ -71,31 +80,37 @@ class ContentTableViewCell: UITableViewCell {
     
         self.contentView.addSubview(self.idLabel)
         self.idLabel.snp.makeConstraints { (make) -> Void in
-            make.left.equalToSuperview().offset(10)
-            make.top.equalToSuperview().offset(5)
+            make.left.equalToSuperview().offset(10.0)
+            make.top.equalToSuperview().offset(5.0)
+        }
+
+        self.contentView.addSubview(self.typeLabel)
+        self.typeLabel.snp.makeConstraints { (make) -> Void in
+            make.top.equalTo(self.idLabel.snp.bottom).offset(5.0)
+            make.centerX.equalToSuperview()
         }
 
         self.contentView.addSubview(self.dateLabel)
         self.dateLabel.snp.makeConstraints { (make) -> Void in
-            make.top.equalToSuperview().offset(5)
-            make.right.equalToSuperview().offset(-10)
+            make.top.equalToSuperview().offset(5.0)
+            make.right.equalToSuperview().offset(-10.0)
         }
         
         self.contentView.addSubview(self.dataLabel)
         self.dataLabel.snp.makeConstraints { (make) -> Void in
-            make.top.equalTo(self.idLabel.snp.bottom).offset(5.0)
-            make.bottom.equalToSuperview().offset(-10)
-            make.left.equalToSuperview().offset(10)
-            make.right.equalToSuperview().offset(-10)
+            make.top.equalTo(self.typeLabel.snp.bottom).offset(5.0)
+            make.bottom.equalToSuperview().offset(-10.0)
+            make.left.equalToSuperview().offset(10.0)
+            make.right.equalToSuperview().offset(-10.0)
             make.centerX.equalToSuperview()
         }
         
         self.contentView.addSubview(self.contentImageView)
         self.contentImageView.snp.makeConstraints { (make) -> Void in
-            make.top.equalTo(self.idLabel.snp.bottom).offset(5.0)
-            make.bottom.equalToSuperview().offset(-10)
-            make.left.equalToSuperview().offset(10)
-            make.right.equalToSuperview().offset(-10)
+            make.top.equalTo(self.typeLabel.snp.bottom).offset(5.0)
+            make.bottom.equalToSuperview().offset(-10.0)
+            make.left.equalToSuperview().offset(10.0)
+            make.right.equalToSuperview().offset(-10.0)
             make.centerX.equalToSuperview()
         }
         
@@ -105,8 +120,9 @@ class ContentTableViewCell: UITableViewCell {
     
     func configureCellData(with cellData: ContentData) {
         
-        self.idLabel.text = "\(cellData.id ?? "")"
-        self.dateLabel.text = "\(cellData.date ?? "")"
+        self.idLabel.text = cellData.id ?? ""
+        self.dateLabel.text = cellData.date ?? ""
+        self.typeLabel.text = cellData.type
         
         if cellData.type == "image" {
             self.contentImageView.isHidden = false

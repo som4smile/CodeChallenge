@@ -25,14 +25,14 @@ class ActualSizeImageViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         self.view.backgroundColor = .systemGroupedBackground
-        self.title = "Image"
+        self.title = self.contentData?.id ?? "Image View"
         
         self.view.addSubview(self.contentImageView)
         self.contentImageView.snp.makeConstraints { (make) -> Void in
             make.top.equalToSuperview().offset(10.0)
-            make.bottom.equalToSuperview().offset(-10)
-            make.left.equalToSuperview().offset(10)
-            make.right.equalToSuperview().offset(-10)
+            make.bottom.equalToSuperview().offset(-10.0)
+            make.left.equalToSuperview().offset(10.0)
+            make.right.equalToSuperview().offset(-10.0)
         }
         
         guard let contentData = self.contentData, let urlString = contentData.data else { return }
@@ -49,6 +49,5 @@ class ActualSizeImageViewController: UIViewController {
                 }
             }
         })
-        
     }
 }

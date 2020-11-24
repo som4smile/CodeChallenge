@@ -11,6 +11,13 @@ import Alamofire
 
 typealias TaskCompletionHandler = ((Any?, Error?) -> Void)
 
+struct NetworkState {
+
+    var isNetworkAvailable:Bool {
+        return NetworkReachabilityManager()!.isReachable
+    }
+}
+
 class ContentDownloader {
     
     static let sharedInstance = ContentDownloader()
