@@ -15,6 +15,7 @@
 		E32CD425256C310E00361427 /* ContentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E32CD424256C310E00361427 /* ContentTableViewCell.swift */; };
 		E32CD428256C3CA100361427 /* ContentData.swift in Sources */ = {isa = PBXBuildFile; fileRef = E32CD427256C3CA100361427 /* ContentData.swift */; };
 		E32CD42B256C3EBD00361427 /* ContentDownloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = E32CD42A256C3EBD00361427 /* ContentDownloader.swift */; };
+		E3F0CB57256CCD430086F948 /* ActualSizeImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F0CB56256CCD430086F948 /* ActualSizeImageViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +31,7 @@
 		E32CD424256C310E00361427 /* ContentTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentTableViewCell.swift; sourceTree = "<group>"; };
 		E32CD427256C3CA100361427 /* ContentData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentData.swift; sourceTree = "<group>"; };
 		E32CD42A256C3EBD00361427 /* ContentDownloader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentDownloader.swift; sourceTree = "<group>"; };
+		E3F0CB56256CCD430086F948 /* ActualSizeImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActualSizeImageViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -82,6 +84,7 @@
 		E32CD40A256C285100361427 /* CodeChallenge */ = {
 			isa = PBXGroup;
 			children = (
+				E3F0CB53256CAC1A0086F948 /* Helper */,
 				E32CD429256C3E3200361427 /* Download Manager */,
 				E32CD426256C3C8A00361427 /* Data Model */,
 				E32CD423256C30EA00361427 /* Views */,
@@ -106,6 +109,7 @@
 			isa = PBXGroup;
 			children = (
 				E32CD40F256C285100361427 /* HomeViewController.swift */,
+				E3F0CB56256CCD430086F948 /* ActualSizeImageViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -132,6 +136,13 @@
 				E32CD42A256C3EBD00361427 /* ContentDownloader.swift */,
 			);
 			path = "Download Manager";
+			sourceTree = "<group>";
+		};
+		E3F0CB53256CAC1A0086F948 /* Helper */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Helper;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -253,6 +264,7 @@
 				E32CD40C256C285100361427 /* AppDelegate.swift in Sources */,
 				E32CD425256C310E00361427 /* ContentTableViewCell.swift in Sources */,
 				E32CD42B256C3EBD00361427 /* ContentDownloader.swift in Sources */,
+				E3F0CB57256CCD430086F948 /* ActualSizeImageViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

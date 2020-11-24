@@ -12,23 +12,42 @@ import SnapKit
 class ContentTableViewCell: UITableViewCell {
 
     static let cellIdentifier = "ContentTableViewCell"
-        
-    lazy private var idLabel: UILabel = {
+    
+    private var idLabel: UILabel = {
         let idLabel = UILabel(frame: CGRect.zero)
+        idLabel.textAlignment = .left
         idLabel.numberOfLines = 0
         idLabel.font = .systemFont(ofSize: 13.0)
         idLabel.textColor = .darkGray
         return idLabel
     }()
     
-    lazy private var dateLabel: UILabel = {
+    private var dateLabel: UILabel = {
         let dateLabel = UILabel(frame: CGRect.zero)
+        dateLabel.textAlignment = .right
         dateLabel.numberOfLines = 0
         dateLabel.font = .systemFont(ofSize: 13.0)
         dateLabel.textColor = .darkGray
         return dateLabel
     }()
+    
+    private var dataLabel: UILabel = {
+        let dataLabel = UILabel(frame: CGRect.zero)
+        dataLabel.textAlignment = .left
+        dataLabel.numberOfLines = 0
+        dataLabel.font = .systemFont(ofSize: 14.0)
+        dataLabel.textColor = .black
+        return dataLabel
+    }()
 
+    private var contentImageView: UIImageView = {
+        let imageView = UIImageView(frame: CGRect.zero)
+        imageView.image = UIImage(named: "defaultImage")
+        imageView.contentMode = .scaleAspectFit
+        imageView.isUserInteractionEnabled = false
+        return imageView
+    }()
+    
     // MARK: Life cycle methods
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -58,13 +77,64 @@ class ContentTableViewCell: UITableViewCell {
 
         self.contentView.addSubview(self.dateLabel)
         self.dateLabel.snp.makeConstraints { (make) -> Void in
-            make.top.equalTo(self.idLabel.snp.bottom).offset(5.0)
-             make.left.equalTo(self.idLabel)
+            make.top.equalToSuperview().offset(5)
+            make.right.equalToSuperview().offset(-10)
         }
+        
+        self.contentView.addSubview(self.dataLabel)
+        self.dataLabel.snp.makeConstraints { (make) -> Void in
+            make.top.equalTo(self.idLabel.snp.bottom).offset(5.0)
+            make.bottom.equalToSuperview().offset(-10)
+            make.left.equalToSuperview().offset(10)
+            make.right.equalToSuperview().offset(-10)
+            make.centerX.equalToSuperview()
+        }
+        
+        self.contentView.addSubview(self.contentImageView)
+        self.contentImageView.snp.makeConstraints { (make) -> Void in
+            make.top.equalTo(self.idLabel.snp.bottom).offset(5.0)
+            make.bottom.equalToSuperview().offset(-10)
+            make.left.equalToSuperview().offset(10)
+            make.right.equalToSuperview().offset(-10)
+            make.centerX.equalToSuperview()
+        }
+        
+        layoutSubviews()
+        layoutIfNeeded()
     }
     
     func configureCellData(with cellData: ContentData) {
-        self.idLabel.text = "\(cellData.id ?? "0000")"
-        self.dateLabel.text = "\(cellData.date ?? "01/01/0101")"
+        
+        self.idLabel.text = "\(cellData.id ?? "")"
+        self.dateLabel.text = "\(cellData.date ?? "")"
+        
+        if cellData.type == "image" {
+            self.contentImageView.isHidden = false
+            self.dataLabel.isHidden = true
+            self.contentImageView.image = UIImage(named: "defaultImage")
+            self.downloadImage(imageURL: cellData.data)
+        } else {
+            self.contentImageView.isHidden = true
+            self.dataLabel.isHidden = false
+
+             self.dataLabel.text = "\(cellData.data ?? "")"
+        }
+    }
+    
+    func downloadImage(imageURL: String?) {
+        guard let urlString = imageURL else {
+            return
+        }
+        
+        ContentDownloader.sharedInstance.downloadImage(with: urlString, completionBlock: { (imageData, error) in
+            if imageData != nil {
+                DispatchQueue.main.async {
+                    self.contentImageView.image = UIImage(data: imageData as! Data)
+                    self.layoutSubviews()
+                    self.layoutIfNeeded()
+                }
+            }
+        })
+        
     }
 }

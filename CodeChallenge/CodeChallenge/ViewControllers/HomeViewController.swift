@@ -15,7 +15,7 @@ class HomeViewController: UIViewController {
         return UITableView(frame: self.view.bounds, style: .plain)
     }()
     
-    var tableData = [ContentData]()
+    var tableData: [ContentData]?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -55,7 +55,7 @@ class HomeViewController: UIViewController {
                     let contentDataArray: [ContentData] = try! JSONDecoder().decode([ContentData].self, from: contentData)
                     
                     if !contentDataArray.isEmpty {
-                        self.tableData = contentDataArray
+                        self.tableData = self.sortList(list: contentDataArray)
                         DispatchQueue.main.async {
                             self.tableView.reloadData()
                         }
@@ -65,22 +65,40 @@ class HomeViewController: UIViewController {
             } else {
                 print("\(String(describing: error))")
             }
-            
         })
     }
+    
+    func sortList(list: [ContentData]) -> [ContentData] {
+        let sortedArray = list.sorted(by: { $0.type > $1.type })
+        print(sortedArray)
+        return sortedArray
+    }
+
 }
 
 extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: ContentTableViewCell.cellIdentifier, for: indexPath) as? ContentTableViewCell  else {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: ContentTableViewCell.cellIdentifier, for: indexPath) as? ContentTableViewCell,
+            let tableData = self.tableData else {
             return UITableViewCell()
         }
 
-        cell.configureCellData(with: self.tableData[indexPath.row])
+        cell.configureCellData(with: tableData[indexPath.row])
         return cell
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return tableData.count
+        return self.tableData?.count ?? 0
+    }
+    
+    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        guard let tableData = self.tableData else { return }
+        
+         if tableData[indexPath.row].type == "image" {
+            print("Image \(String(describing: tableData[indexPath.row].id)) Selected")
+            let imageViewController = ActualSizeImageViewController()
+            imageViewController.contentData = tableData[indexPath.row]
+            self.navigationController?.pushViewController(imageViewController, animated: true)
+        }
     }
 }
