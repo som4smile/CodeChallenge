@@ -11,12 +11,18 @@ import SnapKit
 
 class HomeViewController: UIViewController {
     
+    // MARK: - Properties Initializer
+
     lazy var tableView: UITableView = {
         return UITableView(frame: self.view.bounds, style: .plain)
     }()
     
-    var tableData: [ContentData]?
+    // MARK: Instance variables
+
+    private var tableData: [ContentData]?
     
+    // MARK: Life cycle method
+
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
@@ -26,6 +32,8 @@ class HomeViewController: UIViewController {
         self.configureTableView()
         self.retrieveTableData()
     }
+    
+    // MARK: Private member functions
     
     private func configureTableView() {
         
@@ -42,39 +50,67 @@ class HomeViewController: UIViewController {
         self.tableView.rowHeight = UITableView.automaticDimension
     }
     
+    // API Method to download contents
     private func retrieveTableData() {
-        ContentDownloader.sharedInstance.downloadContent(with: { (json, error) in
-            if (json != nil) {
-                print("\(String(describing: json))")
-                
-                if let jsonData = json as? [[String: Any]],
-                    let jsonString = try? JSONSerialization.data(withJSONObject: jsonData, options: []),
-                    let content = String(data: jsonString, encoding: .utf8) {
+        if NetworkState().isNetworkAvailable {
+            
+            ContentDownloader.sharedInstance.downloadContent(with: { (json, error) in
+                if (json != nil) {
+                    print("\(String(describing: json))")
                     
-                    let contentData = content.data(using: .utf8)!
-                    let contentDataArray: [ContentData] = try! JSONDecoder().decode([ContentData].self, from: contentData)
-                    
-                    if !contentDataArray.isEmpty {
-                        self.tableData = self.sortList(list: contentDataArray)
-                        DispatchQueue.main.async {
-                            self.tableView.reloadData()
-                        }
+                    if let jsonData = json as? [[String: Any]] {
+                        ContentFileManager.saveContentData(contentData: jsonData)
+                        self.parseData(jsonData: jsonData)
                     }
+                } else {
+                    print("\(String(describing: error))")
                 }
-                
-            } else {
-                print("\(String(describing: error))")
-            }
-        })
+            })
+        } else {
+            self.showAlert(title: "Error!", message: "Network is not available. Data from local data file is displayed.", buttonTitle: "OK")
+            guard let jsonData = ContentFileManager.readContentData() else { return }
+            self.parseData(jsonData: jsonData)
+        }
     }
     
-    func sortList(list: [ContentData]) -> [ContentData] {
+    // Parsing downloaded data
+    private func parseData(jsonData: [[String: Any]]) {
+        if let jsonString = try? JSONSerialization.data(withJSONObject: jsonData, options: []),
+            let content = String(data: jsonString, encoding: .utf8) {
+                            
+            let contentData = content.data(using: .utf8)!
+            let contentDataArray: [ContentData] = try! JSONDecoder().decode([ContentData].self, from: contentData)
+            
+            if !contentDataArray.isEmpty {
+                self.tableData = self.sortList(list: contentDataArray)
+                DispatchQueue.main.async {
+                    self.tableView.reloadData()
+                }
+            }
+        }
+    }
+   
+    // Sorting array by type (Text and Image)
+    private func sortList(list: [ContentData]) -> [ContentData] {
         let sortedArray = list.sorted(by: { $0.type > $1.type })
         print(sortedArray)
         return sortedArray
     }
 
+    private func showAlert(title: String, message: String, buttonTitle: String) {
+        let uiAlert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        uiAlert.addAction(UIAlertAction(title: NSLocalizedString(buttonTitle, comment: "Default action"), style: .default, handler: { _ in
+            debugPrint("Alert button tap")
+        }))
+        
+        DispatchQueue.main.async {
+            self.present(uiAlert, animated: true, completion: nil)
+        }
+    }
+
 }
+
+// MARK: - Table view data source and delegate
 
 extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -82,7 +118,6 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
             let tableData = self.tableData else {
             return UITableViewCell()
         }
-
         cell.configureCellData(with: tableData[indexPath.row])
         return cell
     }
@@ -91,14 +126,19 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
         return self.tableData?.count ?? 0
     }
     
-    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let tableData = self.tableData else { return }
         
-         if tableData[indexPath.row].type == "image" {
-            print("Image \(String(describing: tableData[indexPath.row].id)) Selected")
-            let imageViewController = ActualSizeImageViewController()
-            imageViewController.contentData = tableData[indexPath.row]
-            self.navigationController?.pushViewController(imageViewController, animated: true)
+        if tableData[indexPath.row].type == "image" {
+            if NetworkState().isNetworkAvailable {
+                print("Image \(String(describing: tableData[indexPath.row].id)) Selected")
+                let imageViewController = ActualSizeImageViewController()
+                imageViewController.contentData = tableData[indexPath.row]
+                self.navigationController?.pushViewController(imageViewController, animated: true)
+            } else {
+                self.showAlert(title: "Error!", message: "Network is not available.", buttonTitle: "OK")
+            }
         }
     }
 }
