@@ -30,8 +30,8 @@ class ContentDownloader {
         })
     }
     
-    func downloadImage(with completionBlock: @escaping TaskCompletionHandler)-> Void {
-        AF.download(self.urlString).responseData(completionHandler: { response in
+    func downloadImage(with imageURL: String, completionBlock: @escaping TaskCompletionHandler)-> Void {
+        AF.download(imageURL).responseData(completionHandler: { response in
             
              switch response.result {
             

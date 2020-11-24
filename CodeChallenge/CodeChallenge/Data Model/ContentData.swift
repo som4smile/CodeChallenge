@@ -10,12 +10,15 @@ import Foundation
 
 struct ContentData: Codable {
     var id: String?
-    var type: String?
+    var type: String
     var date: String?
     var data: String?
     
     enum CodingKeys: String, CodingKey {
-        case id, type, date, data
+        case id
+        case type
+        case date
+        case data
     }
 }
 
