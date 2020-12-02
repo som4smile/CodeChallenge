@@ -31,6 +31,7 @@
 		E32CD424256C310E00361427 /* ContentTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentTableViewCell.swift; sourceTree = "<group>"; };
 		E32CD427256C3CA100361427 /* ContentData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentData.swift; sourceTree = "<group>"; };
 		E32CD42A256C3EBD00361427 /* ContentDownloader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentDownloader.swift; sourceTree = "<group>"; };
+		E35DABE22577F90300DFAF85 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E3F0CB56256CCD430086F948 /* ActualSizeImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActualSizeImageViewController.swift; sourceTree = "<group>"; };
 		E3F0CB5A256D02550086F948 /* ContentFileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentFileManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -93,6 +94,7 @@
 				E32CD421256C30CF00361427 /* AppDelegate */,
 				E32CD414256C285200361427 /* Assets.xcassets */,
 				E32CD416256C285200361427 /* LaunchScreen.storyboard */,
+				E35DABE22577F90300DFAF85 /* Info.plist */,
 			);
 			path = CodeChallenge;
 			sourceTree = "<group>";
