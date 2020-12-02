@@ -15,6 +15,7 @@
 		E32CD425256C310E00361427 /* ContentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E32CD424256C310E00361427 /* ContentTableViewCell.swift */; };
 		E32CD428256C3CA100361427 /* ContentData.swift in Sources */ = {isa = PBXBuildFile; fileRef = E32CD427256C3CA100361427 /* ContentData.swift */; };
 		E32CD42B256C3EBD00361427 /* ContentDownloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = E32CD42A256C3EBD00361427 /* ContentDownloader.swift */; };
+		E3C56ADE2577F8340089A34A /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E32CD419256C285200361427 /* Info.plist */; };
 		E3F0CB57256CCD430086F948 /* ActualSizeImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F0CB56256CCD430086F948 /* ActualSizeImageViewController.swift */; };
 		E3F0CB5B256D02550086F948 /* ContentFileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F0CB5A256D02550086F948 /* ContentFileManager.swift */; };
 /* End PBXBuildFile section */
@@ -210,6 +211,7 @@
 			files = (
 				E32CD418256C285200361427 /* LaunchScreen.storyboard in Resources */,
 				E32CD415256C285200361427 /* Assets.xcassets in Resources */,
+				E3C56ADE2577F8340089A34A /* Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
